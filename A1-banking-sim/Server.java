@@ -308,7 +308,7 @@ public class Server {
      */
     public void run()
     {   Transactions trans = new Transactions();
-    	long serverStartTime, serverEndTime;
+    	long serverStartTime = 0, serverEndTime = 0;
 
     	System.out.println("\n DEBUG : Server.run() - starting server thread " + objNetwork.getServerConnectionStatus());
     	
