@@ -170,6 +170,7 @@ public class Client extends Thread {
             System.out.println("\n DEBUG : Client.sendTransactions() - sending transaction on account " + transaction[i].getAccountNumber());
             
             objNetwork.send(transaction[i]);                            /* Transmit current transaction */
+            System.out.print(i);
             i++;
             
             
