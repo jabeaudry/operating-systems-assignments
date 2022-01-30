@@ -1,5 +1,6 @@
 
 import java.util.Scanner;
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.util.InputMismatchException;
@@ -16,7 +17,7 @@ import java.util.InputMismatchException;
  * @author Kerly Titus
  */
 
-public class Server {
+public class Server extends Thread{
   
 	int numberOfTransactions;         /* Number of transactions handled by the server */
 	int numberOfAccounts;             /* Number of accounts stored in the server */
@@ -129,6 +130,9 @@ public class Server {
         
         try
         {
+        File file = new File("account.txt");
+        System.out.print(file.exists());
+        System.out.print(file.canRead());
          inputStream = new Scanner(new FileInputStream("account.txt"));
         }
         catch(FileNotFoundException e)
