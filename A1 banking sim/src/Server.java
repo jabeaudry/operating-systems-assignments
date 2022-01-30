@@ -130,9 +130,7 @@ public class Server extends Thread{
         
         try
         {
-        File file = new File("account.txt");
-        System.out.print(file.exists());
-        System.out.print(file.canRead());
+       
          inputStream = new Scanner(new FileInputStream("account.txt"));
         }
         catch(FileNotFoundException e)
