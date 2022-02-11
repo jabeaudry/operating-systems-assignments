@@ -34,9 +34,5 @@ public class Driver {
         
         objSendingClient.start();								/* Activate the client (send) */
         objReceivingClient.start();
-        
-        System.out.println("test");
-        
-        /* Complete here the code for the main method ...*/
     }
 }
