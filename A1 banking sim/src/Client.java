@@ -222,6 +222,7 @@ public class Client extends Thread {
      */
     public void run()
     {       
+    	Transactions transact = new Transactions();
     	long clientStartTime = 0, clientEndTime = 0;
     	clientStartTime = System.currentTimeMillis();
     	
@@ -232,18 +233,17 @@ public class Client extends Thread {
         	clientEndTime = System.currentTimeMillis();
         	
         	System.out.println("All transactions have been sent.");
-        	System.out.println("\n Terminating client sending thread - Running time " + (clientEndTime - clientStartTime) + " milliseconds");
         } 
     	else if (clientOperation.equals("receiving"))
         { 
-    		Transactions transact = new Transactions();
     		//sends all transactions from the output buffer
     		receiveTransactions(transact);
-    		clientEndTime = System.currentTimeMillis();
-    		System.out.println("\n Terminating client receiving thread - Running time " + (clientEndTime - clientStartTime) + " milliseconds");
-        
-    		//String cip = objNetwork.getClientIP();
-            //objNetwork.disconnect(cip);
-        }    	
+    		
+    		String cip = objNetwork.getClientIP();
+            objNetwork.disconnect(cip);
+        }
+    	
+    	clientEndTime = System.currentTimeMillis();
+    	System.out.println("\n Terminating client " + clientOperation + " thread - Running time " + (clientEndTime - clientStartTime) + " milliseconds");
     }
 }
