@@ -199,7 +199,7 @@ public class Server extends Thread{
         	 
         	// while the input buffer is empty, the server thread yields
              while (objNetwork.getInBufferStatus().equals("empty")) {
-             	this.yield();     
+             	Thread.yield();     
              } 
         	 
         	 if (!objNetwork.getInBufferStatus().equals("empty"))
@@ -245,7 +245,7 @@ public class Server extends Thread{
         		 
         		// while the ouput buffer is full, the server thread yields
                  while (objNetwork.getOutBufferStatus().equals("full")) {
-                 	this.yield();     
+                 	Thread.yield();     
                  } 
         		 
         		 objNetwork.transferOut(trans);                            		/* Transfer a completed transaction from the server to the network output buffer */
@@ -321,17 +321,18 @@ public class Server extends Thread{
      * @param
      */
     public void run()
-    {   Transactions trans = new Transactions();
+    {   
+    	Transactions trans = new Transactions();
     	long serverStartTime = 0, serverEndTime = 0;
     	System.out.println("\n DEBUG : Server.run() - starting server thread " + objNetwork.getServerConnectionStatus());
     	
+    	serverStartTime = System.currentTimeMillis();
     	processTransactions(trans);
-    	
+    	serverEndTime = System.currentTimeMillis();
     	
     	/* Implement the code for the run method */
         
-        System.out.println("\n Terminating server thread - " + " Running time " + (serverEndTime - serverStartTime) + " milliseconds");
-           
+        System.out.println("\n Terminating server thread - " + " Running time " + (serverEndTime - serverStartTime) + " milliseconds");      
     }
 }
 
