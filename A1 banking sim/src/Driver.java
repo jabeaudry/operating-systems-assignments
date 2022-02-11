@@ -25,14 +25,17 @@ public class Driver {
     	
     	Network objNetwork = new Network("network");            /* Activate the network */
         objNetwork.start();
+        
         Server objServer = new Server();
         objServer.start();
+        
         Client objSendingClient = new Client("sending");	
-        objSendingClient.start();	/* Activate the client (send) */
-//        Client objReceivingClient = new Client("receiving");	/* Activate the client (receive) */
-//        objReceivingClient.start();
+        Client objReceivingClient = new Client("receiving");	/* Activate the client (receive) */
         
+        objSendingClient.start();								/* Activate the client (send) */
+        objReceivingClient.start();
         
+        System.out.println("test");
         
         /* Complete here the code for the main method ...*/
     }

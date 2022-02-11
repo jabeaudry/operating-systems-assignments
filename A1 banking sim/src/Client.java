@@ -162,7 +162,7 @@ public class Client extends Thread {
         	 
         	// while the input buffer is full, the client sender thread yields
             while (objNetwork.getInBufferStatus().equals("full")) {
-            	this.yield();     
+            	Thread.yield();     
             } 
             
             transaction[i].setTransactionStatus("sent");   /* Set current transaction status */
@@ -191,8 +191,10 @@ public class Client extends Thread {
          
          while (i < getNumberOfTransactions())
          {     
-        	 // while( objNetwork.getOutBufferStatus().equals("empty"));  	/* Alternatively, busy-wait until the network output buffer is available */
-                                                                        	
+        	while( objNetwork.getOutBufferStatus().equals("empty")) {  		/* Alternatively, busy-wait until the network output buffer is available */
+        		Thread.yield();
+    		}
+        		
             objNetwork.receive(transact);                               	/* Receive updated transaction from the network buffer */
             
             System.out.println("\n DEBUG : Client.receiveTransactions() - receiving updated transaction on account " + transact.getAccountNumber());
@@ -219,14 +221,29 @@ public class Client extends Thread {
      * @param
      */
     public void run()
-    {   
-    	Transactions transact = new Transactions();
-    	long sendClientStartTime, sendClientEndTime, receiveClientStartTime, receiveClientEndTime;
-    
-    	//sends all transactions to the input buffer
-    	sendTransactions();
-    	System.out.println("All transactions have been sent.");
+    {       
+    	long clientStartTime = 0, clientEndTime = 0;
+    	clientStartTime = System.currentTimeMillis();
     	
-    	/* Implement here the code for the client receiver ... */
+    	if (clientOperation.equals("sending"))
+        { 
+    		//sends all transactions to the input buffer
+        	sendTransactions();
+        	clientEndTime = System.currentTimeMillis();
+        	
+        	System.out.println("All transactions have been sent.");
+        	System.out.println("\n Terminating client sending thread - Running time " + (clientEndTime - clientStartTime) + " milliseconds");
+        } 
+    	else if (clientOperation.equals("receiving"))
+        { 
+    		Transactions transact = new Transactions();
+    		//sends all transactions from the output buffer
+    		receiveTransactions(transact);
+    		clientEndTime = System.currentTimeMillis();
+    		System.out.println("\n Terminating client receiving thread - Running time " + (clientEndTime - clientStartTime) + " milliseconds");
+        
+    		//String cip = objNetwork.getClientIP();
+            //objNetwork.disconnect(cip);
+        }    	
     }
 }
