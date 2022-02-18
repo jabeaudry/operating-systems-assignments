@@ -555,14 +555,14 @@ public class Network extends Thread {
     	
     	while (true)
     	{
-    		//as long as the server or the client are connected, the network thread yields
-    		if (clientConnectionStatus.equals("connected") || serverConnectionStatus.equals("connected")) {
-    			this.yield();
-    		}
+    		//System.out.println("NETWORK");
+
     		//if the server and the client are both disconnected, the network disconnects
     		if (clientConnectionStatus.equals("disconnected") && serverConnectionStatus.equals("disconnected")) {
     			return;
     		}
+        
+        Thread.yield();
     	}  
     	
     	/* Implement here the code for the run method ... */  
