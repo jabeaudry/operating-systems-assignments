@@ -230,7 +230,6 @@ public class Client extends Thread {
         { 
     		//sends all transactions to the input buffer
         	sendTransactions();
-        	clientEndTime = System.currentTimeMillis();
         	
         	System.out.println("All transactions have been sent.");
         } 
