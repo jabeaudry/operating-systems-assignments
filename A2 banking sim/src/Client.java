@@ -110,7 +110,7 @@ public class Client extends Thread {
         
         try
         {
-        	inputStream = new Scanner(new FileInputStream("transaction2.txt"));
+        	inputStream = new Scanner(new FileInputStream("transaction.txt"));
         }
         catch(FileNotFoundException e)
         {
@@ -130,14 +130,14 @@ public class Client extends Thread {
             }
              catch(InputMismatchException e)
             {
-                System.out.println("Line " + i + "file transactions.txt invalid input");
+                System.out.println("Line " + i + "file transaction.txt invalid input");
                 System.exit(0);
             }
             
         }
         setNumberOfTransactions(i);		/* Record the number of transactions processed */
         
-        /* System.out.println("\n DEBUG : Client.readTransactions() - " + getNumberOfTransactions() + " transactions processed"); */
+        System.out.println("\n DEBUG : Client.readTransactions() - " + getNumberOfTransactions() + " transactions processed"); 
         
         inputStream.close( );
 
@@ -163,7 +163,7 @@ public class Client extends Thread {
                                               	
             transaction[i].setTransactionStatus("sent");   /* Set current transaction status */
            
-            /* System.out.println("\n DEBUG : Client.sendTransactions() - sending transaction on account " + transaction[i].getAccountNumber()); */ 
+//            System.out.println("\n DEBUG : Client.sendTransactions() - sending transaction on account " + transaction[i].getAccountNumber()); 
             
             Network.send(transaction[i]);                            /* Transmit current transaction */
             i++;          
@@ -183,15 +183,15 @@ public class Client extends Thread {
          
          while (i < getNumberOfTransactions())
          {   
-//        	// while (Network.getOutBufferStatus().equals("empty")) 
-//        	// { 
-//        	//	 Thread.yield(); 	/* Yield the cpu if the network output buffer is full */
-//        		 
-//        	// }
+        	 while (Network.getOutBufferStatus().equals("empty")) 
+        	{ 
+        		 Thread.yield(); 	/* Yield the cpu if the network output buffer is full */
+        		 
+        	}
                                                                             	
             Network.receive(transact);                               	/* Receive updated transaction from the network buffer */
             
-            /* System.out.println("\n DEBUG : Client.receiveTransactions() - receiving updated transaction on account " + transact.getAccountNumber()); */
+//            System.out.println("\n DEBUG : Client.receiveTransactions() - receiving updated transaction on account " + transact.getAccountNumber()); 
             
             System.out.println(transact);                               /* Display updated transaction */    
             i++;
