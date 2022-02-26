@@ -432,8 +432,8 @@ public class Network extends Thread {
         		outGoingPacket[inputIndexServer].setTransactionError(outPacket.getTransactionError());
         		outGoingPacket[inputIndexServer].setTransactionStatus("transferred");
             
-        		System.out.println("\n DEBUG : Network.transferOut() - index inputIndexServer " + inputIndexServer); 
-        		System.out.println("\n DEBUG : Network.transferOut() - account number " + outGoingPacket[inputIndexServer].getAccountNumber()); 
+        		//System.out.println("\n DEBUG : Network.transferOut() - index inputIndexServer " + inputIndexServer); 
+        		//System.out.println("\n DEBUG : Network.transferOut() - account number " + outGoingPacket[inputIndexServer].getAccountNumber()); 
             
         		setinputIndexServer(((getinputIndexServer() + 1) % getMaxNbPackets())); /* Increment the output buffer index for the server */
         		/* Check if output buffer is full */
@@ -441,7 +441,7 @@ public class Network extends Thread {
         		{
         			setOutBufferStatus("full");
                 
-        			System.out.println("\n DEBUG : Network.transferOut() - outGoingBuffer status " + getOutBufferStatus()); 
+        			//System.out.println("\n DEBUG : Network.transferOut() - outGoingBuffer status " + getOutBufferStatus()); 
         		}
         		else
         		{
@@ -467,8 +467,8 @@ public class Network extends Thread {
     		     inPacket.setTransactionError(inComingPacket[outputIndexServer].getTransactionError());
     		     inPacket.setTransactionStatus("received");
            
-    		     System.out.println("\n DEBUG : Network.transferIn() - index outputIndexServer " + outputIndexServer); 
-    		     System.out.println("\n DEBUG : Network.transferIn() - account number " + inPacket.getAccountNumber()); 
+    		    // System.out.println("\n DEBUG : Network.transferIn() - index outputIndexServer " + outputIndexServer); 
+    		    // System.out.println("\n DEBUG : Network.transferIn() - account number " + inPacket.getAccountNumber()); 
             
     		     setoutputIndexServer(((getoutputIndexServer() + 1) % getMaxNbPackets()));	/* Increment the input buffer index for the server */
     		     /* Check if input buffer is empty */
