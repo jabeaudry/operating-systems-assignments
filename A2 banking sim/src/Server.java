@@ -282,17 +282,23 @@ public class Server extends Thread {
         	 
         	// if the input buffer is empty, the server thread yields
              
-        	 while ( (Network.getInBufferStatus().equals("empty") && !Network.getClientConnectionStatus().equals("disconnected")) ) 
-        	 { 
-        		 Thread.yield(); 	/* Yield the cpu if the network input buffer is empty */
-        	 }
+//        	 while ( (Network.getInBufferStatus().equals("empty") && !Network.getClientConnectionStatus().equals("disconnected")) ) 
+//        	 { 
+//        		 Thread.yield(); 	/* Yield the cpu if the network input buffer is empty */
+//        	 }
         	 
         	 if (!Network.getInBufferStatus().equals("empty"))
         	 { 
         		// System.out.println("\n DEBUG : Server.processTransactions() - transferring in account " + trans.getAccountNumber()); 
         		 
         		 
-        		 Network.transferIn(trans);                              /* Transfer a transaction from the network input buffer */
+        		 try {
+        			 
+					Network.transferIn(trans);
+					
+				} catch (InterruptedException e) {
+					e.printStackTrace();
+				}                              /* Transfer a transaction from the network input buffer */
         		 
         		 
         		 accIndex = findAccount(trans.getAccountNumber());
@@ -331,14 +337,20 @@ public class Server extends Thread {
 
         		
         		// while the ouput buffer is full, the server thread yields
-        		 while (Network.getOutBufferStatus().equals("full")) 
-        		 { 
-        			 Thread.yield();		/* Yield the cpu if the network output buffer is full */
-        		 }
+//        		 while (Network.getOutBufferStatus().equals("full")) 
+//        		 { 
+//        			 Thread.yield();		/* Yield the cpu if the network output buffer is full */
+//        		 }
         		
         		 //System.out.println("\n DEBUG : Server.processTransactions() - transferring out account " + trans.getAccountNumber()); 
         		 
-        		 Network.transferOut(trans);                            		/* Transfer a completed transaction from the server to the network output buffer */
+        		 try {
+        			 
+					Network.transferOut(trans);
+					
+				} catch (InterruptedException e) {
+					e.printStackTrace();
+				}                            		/* Transfer a completed transaction from the server to the network output buffer */
         		 setNumberOfTransactions( (getNumberOfTransactions() +  1) ); 	/* Count the number of transactions processed */
         	 }
          }
@@ -471,8 +483,7 @@ public class Server extends Thread {
     	}
     	else if (serverThreadId.equals("Thread2")) {
     		processTransactions(trans);
-    		serverThreadRunningStatus2 = "terminated";
-    		
+    		serverThreadRunningStatus2 = "terminated";		
     	}
     	
     	

@@ -1,5 +1,6 @@
 
 import java.util.Scanner;
+import java.util.concurrent.Semaphore;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.util.InputMismatchException;
@@ -21,7 +22,8 @@ public class Client extends Thread {
     private static int maxNbTransactions;      		/* Maximum number of transactions */
     private static Transactions [] transaction; 	        /* Transactions to be processed */
     private String clientOperation;    			/* sending or receiving */
-       
+    
+    
 	/** Constructor method of Client class
  	 * 
      * @return 
@@ -44,6 +46,7 @@ public class Client extends Thread {
            {   System.out.println("\n Terminating client application, network unavailable");
                System.exit(0);
            }
+           
        	}
        else
     	   if (operation.equals("receiving"))
@@ -156,16 +159,22 @@ public class Client extends Thread {
          while (i < getNumberOfTransactions())
          {  
         	// while the input buffer is full, the client sender thread yields
-        	 while (Network.getInBufferStatus().equals("full"))
-        	{ 
-         	  Thread.yield(); 	/* Yield the cpu if the network input buffer is full */
-        	}
+//        	 while (Network.getInBufferStatus().equals("full"))
+//        	{ 
+//         	  Thread.yield(); 	/* Yield the cpu if the network input buffer is full */
+//        	}
                                               	
             transaction[i].setTransactionStatus("sent");   /* Set current transaction status */
            
-//            System.out.println("\n DEBUG : Client.sendTransactions() - sending transaction on account " + transaction[i].getAccountNumber()); 
+//          System.out.println("\n DEBUG : Client.sendTransactions() - sending transaction on account " + transaction[i].getAccountNumber()); 
             
-            Network.send(transaction[i]);                            /* Transmit current transaction */
+            try {
+            	
+				Network.send(transaction[i]);
+				
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			}                            /* Transmit current transaction */
             i++;          
          }
          
@@ -183,13 +192,19 @@ public class Client extends Thread {
          
          while (i < getNumberOfTransactions())
          {   
-        	 while (Network.getOutBufferStatus().equals("empty")) 
-        	{ 
-        		 Thread.yield(); 	/* Yield the cpu if the network output buffer is full */
-        		 
-        	}
+//        	 while (Network.getOutBufferStatus().equals("empty")) 
+//        	{ 
+//        		 Thread.yield(); 	/* Yield the cpu if the network output buffer is full */
+//        		 
+//        	}
                                                                             	
-            Network.receive(transact);                               	/* Receive updated transaction from the network buffer */
+            try {
+            	
+				Network.receive(transact);
+				
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			}                               	/* Receive updated transaction from the network buffer */
             
 //            System.out.println("\n DEBUG : Client.receiveTransactions() - receiving updated transaction on account " + transact.getAccountNumber()); 
             
