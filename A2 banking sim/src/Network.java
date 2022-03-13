@@ -464,8 +464,8 @@ public class Network extends Thread {
         		outGoingPacket[inputIndexServer].setTransactionError(outPacket.getTransactionError());
         		outGoingPacket[inputIndexServer].setTransactionStatus("transferred");
             
-        		/* System.out.println("\n DEBUG : Network.transferOut() - index inputIndexServer " + inputIndexServer); */ 
-        		/* System.out.println("\n DEBUG : Network.transferOut() - account number " + outGoingPacket[inputIndexServer].getAccountNumber()); */
+        		//System.out.println("\n DEBUG : Network.transferOut() - index inputIndexServer " + inputIndexServer); 
+        		//System.out.println("\n DEBUG : Network.transferOut() - account number " + outGoingPacket[inputIndexServer].getAccountNumber()); 
             
         		mutex2.release();
         		full2.release();
@@ -476,7 +476,7 @@ public class Network extends Thread {
         		{
         			setOutBufferStatus("full");
                 
-        			/* System.out.println("\n DEBUG : Network.transferOut() - outGoingBuffer status " + getOutBufferStatus()); */
+        			//System.out.println("\n DEBUG : Network.transferOut() - outGoingBuffer status " + getOutBufferStatus()); 
         		}
         		else
         		{
@@ -507,8 +507,8 @@ public class Network extends Thread {
     		     inPacket.setTransactionError(inComingPacket[outputIndexServer].getTransactionError());
     		     inPacket.setTransactionStatus("received");
            
-    		     /* System.out.println("\n DEBUG : Network.transferIn() - index outputIndexServer " + outputIndexServer); */
-    		     /* System.out.println("\n DEBUG : Network.transferIn() - account number " + inPacket.getAccountNumber()); */
+    		    // System.out.println("\n DEBUG : Network.transferIn() - index outputIndexServer " + outputIndexServer); 
+    		    // System.out.println("\n DEBUG : Network.transferIn() - account number " + inPacket.getAccountNumber()); 
             
     		     mutex1.release();
     		     empty1.release();
@@ -519,7 +519,7 @@ public class Network extends Thread {
     		     {
     		    	 setInBufferStatus("empty");
                 
-    		    	/* System.out.println("\n DEBUG : Network.transferIn() - inComingBuffer status " + getInBufferStatus()); */
+    		    	System.out.println("\n DEBUG : Network.transferIn() - inComingBuffer status " + getInBufferStatus()); 
     		     }
     		     else 
     		     {
@@ -599,11 +599,19 @@ public class Network extends Thread {
      */
     public void run()
     {	
-    	/* System.out.println("\n DEBUG : Network.run() - starting network thread"); */
+    	 System.out.println("\n DEBUG : Network.run() - starting network thread"); 
     	
     	while (true)
     	{
-    		/*................................................................................................................................................................*/
-    	}    
+    		//System.out.println("NETWORK");
+
+    		//if the server and the client are both disconnected, the network disconnects
+    		if (clientConnectionStatus.equals("disconnected") && serverConnectionStatus.equals("disconnected")) {
+    			System.out.println("\n Terminating network thread - Client disconnected Server disconnected");
+    			return;
+    		}
+        
+        Thread.yield();
+    	} 
     }
 }
