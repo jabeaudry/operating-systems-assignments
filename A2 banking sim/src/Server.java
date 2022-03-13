@@ -1,5 +1,6 @@
 
 import java.util.Scanner;
+import java.util.concurrent.Semaphore;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.util.InputMismatchException;
@@ -272,17 +273,39 @@ public class Server extends Thread {
          /* Process the accounts until the client disconnects */
          while ((!Network.getClientConnectionStatus().equals("disconnected")))
          {
+<<<<<<< Updated upstream
         	// while ( (Network.getInBufferStatus().equals("empty") && !Network.getClientConnectionStatus().equals("disconnected")) ) 
         	// { 
         	//	 Thread.yield(); 	/* Yield the cpu if the network input buffer is empty */
         	// }
+=======
+        	 
+        	// if the input buffer is empty, the server thread yields
+             
+        	 //while ( (Network.getInBufferStatus().equals("empty") && !Network.getClientConnectionStatus().equals("disconnected")) ) 
+        	 //{ 
+        		 //Thread.yield(); 	/* Yield the cpu if the network input buffer is empty */
+        	 //}
+>>>>>>> Stashed changes
         	 
         	 if (!Network.getInBufferStatus().equals("empty"))
         	 { 
         		 /* System.out.println("\n DEBUG : Server.processTransactions() - transferring in account " + trans.getAccountNumber()); */
         		 
+<<<<<<< Updated upstream
         		 Network.transferIn(trans);                              /* Transfer a transaction from the network input buffer */
              
+=======
+        		 /* Transfer a transaction from the network input buffer */
+        		 try {
+					Network.transferIn(trans);
+        		 } catch (InterruptedException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+        		 }                              
+        		 
+        		 
+>>>>>>> Stashed changes
         		 accIndex = findAccount(trans.getAccountNumber());
         		 /* Process deposit operation */
         		 if (trans.getOperationType().equals("DEPOSIT"))
@@ -320,9 +343,25 @@ public class Server extends Thread {
         	//		 Thread.yield();		/* Yield the cpu if the network output buffer is full */
         	//	 }
         		
+<<<<<<< Updated upstream
         		 /* System.out.println("\n DEBUG : Server.processTransactions() - transferring out account " + trans.getAccountNumber()); */
+=======
+        		// while the ouput buffer is full, the server thread yields
+        		 //while (Network.getOutBufferStatus().equals("full")) 
+        		 //{ 
+        			 //Thread.yield();		/* Yield the cpu if the network output buffer is full */
+        		 //}
+        		
+        		 //System.out.println("\n DEBUG : Server.processTransactions() - transferring out account " + trans.getAccountNumber()); 
+>>>>>>> Stashed changes
         		 
-        		 Network.transferOut(trans);                            		/* Transfer a completed transaction from the server to the network output buffer */
+        		 /* Transfer a completed transaction from the server to the network output buffer */
+        		 try {
+					Network.transferOut(trans);
+				} catch (InterruptedException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}                            		
         		 setNumberOfTransactions( (getNumberOfTransactions() +  1) ); 	/* Count the number of transactions processed */
         	 }
          }

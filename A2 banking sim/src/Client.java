@@ -1,5 +1,6 @@
 
 import java.util.Scanner;
+import java.util.concurrent.Semaphore;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.util.InputMismatchException;
@@ -155,6 +156,7 @@ public class Client extends Thread {
          
          while (i < getNumberOfTransactions())
          {  
+<<<<<<< Updated upstream
 	
         //	 while (Network.getInBufferStatus().equals("full"))
         //	{ 
@@ -164,8 +166,25 @@ public class Client extends Thread {
             transaction[i].setTransactionStatus("sent");   /* Set current transaction status */
            
             /* System.out.println("\n DEBUG : Client.sendTransactions() - sending transaction on account " + transaction[i].getAccountNumber()); */ 
+=======
+        	// while the input buffer is full, the client sender thread yields
+        	 //while (Network.getInBufferStatus().equals("full"))
+        	//{ 
+         	  //Thread.yield(); 	/* Yield the cpu if the network input buffer is full */
+        	//}
+                                              	
+            transaction[i].setTransactionStatus("sent");   /* Set current transaction status */
+           
+            //System.out.println("\n DEBUG : Client.sendTransactions() - sending transaction on account " + transaction[i].getAccountNumber()); 
+>>>>>>> Stashed changes
             
-            Network.send(transaction[i]);                            /* Transmit current transaction */
+            /* Transmit current transaction */
+            try {
+				Network.send(transaction[i]);
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}                            
             i++;          
          }
          
@@ -183,6 +202,7 @@ public class Client extends Thread {
          
          while (i < getNumberOfTransactions())
          {   
+<<<<<<< Updated upstream
         	// while (Network.getOutBufferStatus().equals("empty")) 
         	// { 
         	//	 Thread.yield(); 	/* Yield the cpu if the network output buffer is full */
@@ -190,6 +210,20 @@ public class Client extends Thread {
         	// }
                                                                             	
             Network.receive(transact);                               	/* Receive updated transaction from the network buffer */
+=======
+        	//while (Network.getOutBufferStatus().equals("empty")) 
+        	//{ 
+        		 //Thread.yield(); 	/* Yield the cpu if the network output buffer is full */	 
+        	//}
+           
+        	 /* Receive updated transaction from the network buffer */
+            try {
+				Network.receive(transact);
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}                               	
+>>>>>>> Stashed changes
             
             /* System.out.println("\n DEBUG : Client.receiveTransactions() - receiving updated transaction on account " + transact.getAccountNumber()); */
             
