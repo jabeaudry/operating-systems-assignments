@@ -29,6 +29,7 @@ public class Server extends Thread {
 	private String serverThreadId;				 /* Identification of the two server threads - Thread1, Thread2 */
 	private static String serverThreadRunningStatus1;	 /* Running status of thread 1 - idle, running, terminated */
 	private static String serverThreadRunningStatus2;	 /* Running status of thread 2 - idle, running, terminated */
+	private static String serverThreadRunningStatus3;	 /* Running status of thread 3 - idle, running, terminated */
   
     /** 
      * Constructor method of Client class
@@ -48,9 +49,6 @@ public class Server extends Thread {
     		serverThreadRunningStatus1 = "idle";	
     		account = new Accounts[maxNbAccounts];
     		
-    		
-    		
-    		
     		System.out.println("\n Inializing the Accounts database ...");
     		initializeAccounts( );
     		System.out.println("\n Connecting server to network ...");
@@ -63,7 +61,12 @@ public class Server extends Thread {
     	else
     	{
     		serverThreadId = stid;							/* unshared variable so each thread has its own copy */
-    		serverThreadRunningStatus2 = "idle";				
+
+    		if(serverThreadId.equals("Thread2")) {
+    			serverThreadRunningStatus2 = "idle";
+    		} else {
+    			serverThreadRunningStatus3 = "idle";
+    		}
     	}
     }
   
@@ -199,6 +202,28 @@ public class Server extends Thread {
        	  serverThreadRunningStatus2 = runningStatus;
          }
          
+         /** 
+          * Accessor method of Server class
+          * 
+          * @return serverThreadRunningStatus2
+          * @param
+          */
+          public String getServerThreadRunningStatus3()
+          {
+              return serverThreadRunningStatus3;
+          }
+              
+         /** 
+          * Mutator method of Server class
+          * 
+          * @return 
+          * @param runningStatus
+          */
+          public void setServerThreadRunningStatus3(String runningStatus)
+          { 
+        	  serverThreadRunningStatus3 = runningStatus;
+          }
+         
     /** 
      * Initialization of the accounts from an input file
      * 
@@ -280,8 +305,7 @@ public class Server extends Thread {
          /* Process the accounts until the client disconnects */
          while ((!Network.getClientConnectionStatus().equals("disconnected")))
          {	 
-        	// if the input buffer is empty, the server thread yields
-             
+        	 // if the input buffer is empty, the server thread yields
         	 //while ( (Network.getInBufferStatus().equals("empty") && !Network.getClientConnectionStatus().equals("disconnected")) ) 
         	 //{ 
         		 //Thread.yield(); 	/* Yield the cpu if the network input buffer is empty */
@@ -466,30 +490,46 @@ public class Server extends Thread {
       
     public void run()
     {  
+    	switch(serverThreadId) {
+    	case "Thread1":
+    		serverThreadRunningStatus1 = "running";
+    		break;
+    	case "Thread2":
+    		serverThreadRunningStatus2 = "running";
+    		break;
+    	case "Thread3":
+    		serverThreadRunningStatus3 = "running";
+    		break;
+    	}
     	
- 
     	Transactions trans = new Transactions();
     	long serverStartTime = 0, serverEndTime = 0;
     	System.out.println("\n DEBUG : Server.run() - starting server thread " + Network.getServerConnectionStatus());
     	
     	serverStartTime = System.currentTimeMillis();
-    	
-    	//System.out.print(serverThreadId);
-    	
-    	if (serverThreadId.equals("Thread1")) {
+
+    	switch(serverThreadId) {
+    	case "Thread1":
     		processTransactions(trans);
     		serverThreadRunningStatus1 = "terminated";
-    	}
-    	else if (serverThreadId.equals("Thread2")) {
+    		//System.out.print(serverThreadId + ": " + serverThreadRunningStatus1);
+    		break;
+    	case "Thread2":
     		processTransactions(trans);
     		serverThreadRunningStatus2 = "terminated";
-    		
+    		//System.out.print(serverThreadId + ": " + serverThreadRunningStatus2);
+    		break;
+    	case "Thread3":
+    		processTransactions(trans);
+    		serverThreadRunningStatus3 = "terminated";
+    		//System.out.print(serverThreadId + ": " + serverThreadRunningStatus3);
+    		break;
     	}
     	
     	serverEndTime = System.currentTimeMillis();
     	System.out.println("\n Terminating server "+serverThreadId+" - " + " Running time " + (serverEndTime - serverStartTime) + " milliseconds");
     		//if both server threads are terminated, the server can disconnect
-    		if (serverThreadRunningStatus1.equals("terminated") && serverThreadRunningStatus2.equals("terminated")) {
+    		if (serverThreadRunningStatus1.equals("terminated") && serverThreadRunningStatus2.equals("terminated") && (serverThreadRunningStatus3.equals("terminated") || !Driver.thirdServerThread)) {
     			String sip = Network.getServerIP();
     	        Network.disconnect(sip);
     		}
