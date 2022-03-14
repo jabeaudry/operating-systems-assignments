@@ -12,8 +12,6 @@
  */
 public class Driver {
 
-	public static boolean thirdServerThread = true;
-	
     /** 
      * main class
      * @param args the command line arguments
@@ -27,7 +25,7 @@ public class Driver {
         objServer1.start();
         Server objServer2 = new Server("Thread2");		/* Start the server thread2 */
         objServer2.start();
-        if(thirdServerThread) {
+        if(Server.thirdServerThread) {
         	Server objServer3 = new Server("Thread3");		/* Start the server thread3 */
             objServer3.start();
         }
