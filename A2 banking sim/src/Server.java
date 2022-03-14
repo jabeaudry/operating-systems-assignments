@@ -486,8 +486,6 @@ public class Server extends Thread {
     		
     	}
     	
-    	
-
     	serverEndTime = System.currentTimeMillis();
     	System.out.println("\n Terminating server "+serverThreadId+" - " + " Running time " + (serverEndTime - serverStartTime) + " milliseconds");
     		//if both server threads are terminated, the server can disconnect
@@ -495,16 +493,6 @@ public class Server extends Thread {
     			String sip = Network.getServerIP();
     	        Network.disconnect(sip);
     		}
-        
-    	        
-        
-    
-	 
-    	
-    	/* .....................................................................................................................................................................................................*/
-        
-       
-	
     }
 }
 

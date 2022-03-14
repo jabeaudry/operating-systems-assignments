@@ -368,7 +368,7 @@ public class Network extends Thread {
         	
         	empty1.acquire();
     		mutex1.acquire();
-    		//System.out.println("send to in buffer");
+    		System.out.println("send to in buffer");
     		
     		  inComingPacket[inputIndexClient].setAccountNumber(inPacket.getAccountNumber());
     		  inComingPacket[inputIndexClient].setOperationType(inPacket.getOperationType());
@@ -379,7 +379,7 @@ public class Network extends Thread {
         
     		  mutex1.release();
     		  
-    		 /* System.out.println("\n DEBUG : Network.send() - index inputIndexClient " + inputIndexClient); */
+    		  /* System.out.println("\n DEBUG : Network.send() - index inputIndexClient " + inputIndexClient); */
     		  /* System.out.println("\n DEBUG : Network.send() - account number " + inComingPacket[inputIndexClient].getAccountNumber()); */
         
     		  full1.release();
@@ -410,7 +410,7 @@ public class Network extends Thread {
         {
         	 full2.acquire();
         	 mutex2.acquire();
-        	 //System.out.println("remove from out buffer");
+        	 System.out.println("remove from out buffer");
         	 
         		 outPacket.setAccountNumber(outGoingPacket[outputIndexClient].getAccountNumber());
         		 outPacket.setOperationType(outGoingPacket[outputIndexClient].getOperationType());
@@ -455,7 +455,7 @@ public class Network extends Thread {
         {
         	 	empty2.acquire();
         	 	mutex2.acquire();
-        	 	//System.out.println("send to out buffer");
+        	 	System.out.println("send to out buffer");
         	 	
         		outGoingPacket[inputIndexServer].setAccountNumber(outPacket.getAccountNumber());
         		outGoingPacket[inputIndexServer].setOperationType(outPacket.getOperationType());
@@ -497,7 +497,7 @@ public class Network extends Thread {
         {
 	    	   full1.acquire();
 	    	   mutex1.acquire();
-	    	   //System.out.println("remove from in buffer");
+	    	   System.out.println("remove from in buffer");
     	   
     	   
     		     inPacket.setAccountNumber(inComingPacket[outputIndexServer].getAccountNumber());
