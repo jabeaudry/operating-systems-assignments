@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<classpath>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
+	<classpathentry kind="src" path="A1 banking sim/pa1_40113615_40126080"/>
+	<classpathentry kind="src" path="A1 banking sim/src"/>
+	<classpathentry kind="src" path="A2 banking sim/src"/>
+	<classpathentry kind="output" path="A1 banking sim/bin"/>
+</classpath>
