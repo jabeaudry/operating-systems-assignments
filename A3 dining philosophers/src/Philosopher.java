@@ -24,19 +24,6 @@ public class Philosopher extends BaseThread
 	public void eat()
 	{
 		try
-<<<<<<< HEAD
-		{
-			// ...
-			sleep((long)(Math.random() * TIME_TO_WASTE));
-			// ...
-		}
-		catch(InterruptedException e)
-		{
-			System.err.println("Philosopher.eat():");
-			DiningPhilosophers.reportException(e);
-			System.exit(1);
-		}
-=======
         {
             System.out.println("Philosopher " + this.getTID() +" has started eating.");
             Thread.yield();
@@ -51,7 +38,6 @@ public class Philosopher extends BaseThread
             DiningPhilosophers.reportException(e);
             System.exit(1);
         }
->>>>>>> jacinthe-branch
 	}
 
 	/**
@@ -64,9 +50,6 @@ public class Philosopher extends BaseThread
 	 */
 	public void think()
 	{
-<<<<<<< HEAD
-		// ...
-=======
 		 try
 	     {
 	            System.out.println("Philosopher " + this.getTID() +" has started thinking.");
@@ -81,7 +64,6 @@ public class Philosopher extends BaseThread
 	            DiningPhilosophers.reportException(e);
 	            System.exit(1);
 	      }
->>>>>>> jacinthe-branch
 	}
 
 	/**
@@ -94,19 +76,11 @@ public class Philosopher extends BaseThread
 	 */
 	public void talk()
 	{
-<<<<<<< HEAD
-		// ...
-
-		saySomething();
-
-		// ...
-=======
 		System.out.println("Philosopher " + this.getTID() +" has started talking.");
         Thread.yield();
         saySomething();
         Thread.yield();
         System.out.println("Philosopher " + this.getTID() +" is done talking.");
->>>>>>> jacinthe-branch
 	}
 
 	/**
@@ -129,21 +103,12 @@ public class Philosopher extends BaseThread
 			 * A decision is made at random whether this particular
 			 * philosopher is about to say something terribly useful.
 			 */
-<<<<<<< HEAD
-			if(true == false)
-			{
-				// Some monitor ops down here...
-				talk();
-				// ...
-			}
-=======
 			if(Math.random() <= 0.25)
             {
                 DiningPhilosophers.soMonitor.requestTalk();
                 talk();
                 DiningPhilosophers.soMonitor.endTalk();
             }
->>>>>>> jacinthe-branch
 
 			yield();
 		}
