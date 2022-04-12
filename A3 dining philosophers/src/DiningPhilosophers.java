@@ -67,7 +67,6 @@ public class DiningPhilosophers
 				catch (NumberFormatException e)
 				{
 					System.err.println("\"" + argv[0] + "\" \" is not a positive decimal integer. \n\nUsage: java DiningPhilosophers [NUMBER_OF_PHILOSOPHERS]\n");
-					System.exit(1);
 				}
 			}
 			
