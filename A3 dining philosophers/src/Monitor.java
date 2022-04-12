@@ -11,14 +11,25 @@ public class Monitor
 	 * Data members
 	 * ------------
 	 */
-
-
+	public enum Status {THINKING, HUNGRY, EATING};
+    protected Status[] philosophers;
+    
+    protected int nbPhilosophers;
+    protected boolean isSomeoneTalking;
+    
 	/**
 	 * Constructor
 	 */
 	public Monitor(int piNumberOfPhilosophers)
 	{
 		// TODO: set appropriate number of chopsticks based on the # of philosophers
+		nbPhilosophers = piNumberOfPhilosophers;
+		philosophers = new Status[nbPhilosophers];
+        isSomeoneTalking = false;
+        
+        for (int i = 0; i < nbPhilosophers; i++) {
+        	philosophers[i] = Status.THINKING;
+        }
 	}
 
 	/*
@@ -27,13 +38,37 @@ public class Monitor
 	 * -------------------------------
 	 */
 
+	private synchronized void test(int i) {
+		//If hungry and the philosophers right and left are not eating (chopsticks are available)
+		if((philosophers[i] == Status.HUNGRY) && (philosophers[(i - 1 + nbPhilosophers) % nbPhilosophers] != Status.EATING) 
+				&& (philosophers[(i + 1) % nbPhilosophers] != Status.EATING)) {
+			philosophers[i] = Status.EATING;
+			notifyAll();
+		}
+	}
+	
 	/**
 	 * Grants request (returns) to eat when both chopsticks/forks are available.
 	 * Else forces the philosopher to wait()
 	 */
 	public synchronized void pickUp(final int piTID)
 	{
-		// ...
+		int i = piTID - 1;
+		philosophers[i] = Status.HUNGRY;
+		
+		test(i);
+		
+		//If the philosopher isn't eating, wait and try again
+		while(philosophers[i] != Status.EATING) {
+			try {
+				wait();
+			} catch (InterruptedException e) {
+                System.out.println(e);
+            }
+            test(i);
+		}
+		
+		philosophers[i] = Status.EATING;
 	}
 
 	/**
@@ -42,16 +77,29 @@ public class Monitor
 	 */
 	public synchronized void putDown(final int piTID)
 	{
-		// ...
+		int i = piTID - 1;
+		philosophers[i] = Status.THINKING;
+		test((i - 1  + nbPhilosophers) % nbPhilosophers);
+		test((i + 1) % nbPhilosophers);
+		
+		notifyAll();
 	}
 
 	/**
-	 * Only one philopher at a time is allowed to philosophy
+	 * Only one philosopher at a time is allowed to philosophy
 	 * (while she is not eating).
 	 */
 	public synchronized void requestTalk()
 	{
-		// ...
+		while(isSomeoneTalking) {
+			try{
+				wait();
+			} catch (InterruptedException e) {
+	            System.out.println(e);
+	        }
+		}
+		
+		isSomeoneTalking = true;
 	}
 
 	/**
@@ -60,7 +108,8 @@ public class Monitor
 	 */
 	public synchronized void endTalk()
 	{
-		// ...
+		isSomeoneTalking = false;
+		notifyAll();
 	}
 }
 

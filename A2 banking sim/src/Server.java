@@ -26,7 +26,7 @@ public class Server extends Thread {
 	private static Accounts [] account;              		/* Accounts to be accessed or updated */
 	
 	/* NEW : member variabes to be used in PA2 with appropriate accessor and mutator methods */
-	private String serverThreadId;				 /* Identification of the two server threads - Thread1, Thread2 */
+	private String serverThreadId;				 		/* Identification of the two server threads - Thread1, Thread2 */
 	private static String serverThreadRunningStatus1;	 /* Running status of thread 1 - idle, running, terminated */
 	private static String serverThreadRunningStatus2;	 /* Running status of thread 2 - idle, running, terminated */
 	private static String serverThreadRunningStatus3;	 /* Running status of thread 3 - idle, running, terminated */

@@ -110,7 +110,7 @@ public class Philosopher extends BaseThread
                 DiningPhilosophers.soMonitor.endTalk();
             }
 
-			yield();
+			Thread.yield();
 		}
 	} // run()
 

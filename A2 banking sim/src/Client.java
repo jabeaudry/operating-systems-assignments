@@ -20,8 +20,8 @@ public class Client extends Thread {
     
     private static int numberOfTransactions;   		/* Number of transactions to process */
     private static int maxNbTransactions;      		/* Maximum number of transactions */
-    private static Transactions [] transaction; 	        /* Transactions to be processed */
-    private String clientOperation;    			/* sending or receiving */
+    private static Transactions [] transaction; 	/* Transactions to be processed */
+    private String clientOperation;    				/* sending or receiving */
        
 	/** Constructor method of Client class
  	 * 

@@ -24,7 +24,7 @@ public class Network extends Thread {
     private static Transactions outGoingPacket[];              /* Outgoing network buffer */
     private static String inBufferStatus, outBufferStatus;     /* Current status of the network buffers - normal, full, empty */
     private static String networkStatus;                       /* Network status - active, inactive */
-   
+    
     //semaphores
     static Semaphore full1 = new Semaphore(0);
     static Semaphore mutex1 = new Semaphore(1);
@@ -377,13 +377,6 @@ public class Network extends Thread {
     		  inComingPacket[inputIndexClient].setTransactionError(inPacket.getTransactionError());
     		  inComingPacket[inputIndexClient].setTransactionStatus("transferred");
         
-    		  mutex1.release();
-    		  
-    		  /* System.out.println("\n DEBUG : Network.send() - index inputIndexClient " + inputIndexClient); */
-    		  /* System.out.println("\n DEBUG : Network.send() - account number " + inComingPacket[inputIndexClient].getAccountNumber()); */
-        
-    		  full1.release();
-    		  
     		  setinputIndexClient(((getinputIndexClient( ) + 1) % getMaxNbPackets ()));	/* Increment the input buffer index  for the client */
     		  /* Check if input buffer is full */
     		  if (getinputIndexClient() == getoutputIndexServer())
@@ -396,7 +389,14 @@ public class Network extends Thread {
     		  {
     			  setInBufferStatus("normal");
     		  }
-            
+    		  
+    		  mutex1.release();
+    		  
+    		  /* System.out.println("\n DEBUG : Network.send() - index inputIndexClient " + inputIndexClient); */
+    		  /* System.out.println("\n DEBUG : Network.send() - account number " + inComingPacket[inputIndexClient].getAccountNumber()); */
+        
+    		  full1.release();
+    		  
             return true;
         }   
          
@@ -418,13 +418,6 @@ public class Network extends Thread {
         		 outPacket.setTransactionBalance(outGoingPacket[outputIndexClient].getTransactionBalance());
         		 outPacket.setTransactionError(outGoingPacket[outputIndexClient].getTransactionError());
         		 outPacket.setTransactionStatus("done");
-            
-        		 mutex2.release();
-        		 
-        		 /* System.out.println("\n DEBUG : Network.receive() - index outputIndexClient " + outputIndexClient); */
-        		 /* System.out.println("\n DEBUG : Network.receive() - account number " + outPacket.getAccountNumber()); */
-            
-        		 empty2.release();
         		 
         		 setoutputIndexClient(((getoutputIndexClient( ) + 1) % getMaxNbPackets( ))); /* Increment the output buffer index for the client */
         		 /* Check if output buffer is empty */
@@ -438,6 +431,15 @@ public class Network extends Thread {
         		 {
         			 setOutBufferStatus("normal"); 
         		 }
+        		 
+        		 mutex2.release();
+        		 
+        		 /* System.out.println("\n DEBUG : Network.receive() - index outputIndexClient " + outputIndexClient); */
+        		 /* System.out.println("\n DEBUG : Network.receive() - account number " + outPacket.getAccountNumber()); */
+            
+        		 empty2.release();
+        		 
+        		 
         	            
              return true;
         }   
@@ -467,9 +469,6 @@ public class Network extends Thread {
         		//System.out.println("\n DEBUG : Network.transferOut() - index inputIndexServer " + inputIndexServer); 
         		//System.out.println("\n DEBUG : Network.transferOut() - account number " + outGoingPacket[inputIndexServer].getAccountNumber()); 
             
-        		mutex2.release();
-        		full2.release();
-        		
         		setinputIndexServer(((getinputIndexServer() + 1) % getMaxNbPackets())); /* Increment the output buffer index for the server */
         		/* Check if output buffer is full */
         		if ( getinputIndexServer( ) == getoutputIndexClient( ))
@@ -482,6 +481,11 @@ public class Network extends Thread {
         		{
         			setOutBufferStatus("normal");
         		}
+        		
+        		mutex2.release();
+        		full2.release();
+        		
+        		
         	            
              return true;
         }   
@@ -510,9 +514,6 @@ public class Network extends Thread {
     		    // System.out.println("\n DEBUG : Network.transferIn() - index outputIndexServer " + outputIndexServer); 
     		    // System.out.println("\n DEBUG : Network.transferIn() - account number " + inPacket.getAccountNumber()); 
             
-    		     mutex1.release();
-    		     empty1.release();
-    		     
     		     setoutputIndexServer(((getoutputIndexServer() + 1) % getMaxNbPackets()));	/* Increment the input buffer index for the server */
     		     /* Check if input buffer is empty */
     		     if ( getoutputIndexServer( ) == getinputIndexClient( ))
@@ -525,6 +526,11 @@ public class Network extends Thread {
     		     {
     		    	 setInBufferStatus("normal");
     		     }
+    		     
+    		     mutex1.release();
+    		     empty1.release();
+    		     
+    		     
             
              return true;
         }   
