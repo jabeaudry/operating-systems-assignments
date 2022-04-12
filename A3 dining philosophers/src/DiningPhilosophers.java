@@ -1,3 +1,5 @@
+import java.util.Scanner;
+
 /**
  * Class DiningPhilosophers
  * The main starter.
@@ -47,6 +49,29 @@ public class DiningPhilosophers
 			 * or the default if no arguments supplied.
 			 */
 			int iPhilosophers = DEFAULT_NUMBER_OF_PHILOSOPHERS;
+			
+
+			if (argv.length > 0)   //only runs if an arg is given, else default is assigned
+			{
+				try
+				{
+					iPhilosophers = Integer.parseInt(argv[0]);
+					//test for positive integer
+					if (iPhilosophers <= 0)
+					{
+						System.out.println("\"" + iPhilosophers + "\"  is not a positive decimal integer.\n\nUsage: java DiningPhilosophers [NUMBER_OF_PHILOSOPHERS]\n");
+						iPhilosophers = DEFAULT_NUMBER_OF_PHILOSOPHERS;
+					}
+				}
+				//If the parse fails, display an error message
+				catch (NumberFormatException e)
+				{
+					System.err.println("\"" + argv[0] + "\" \" is not a positive decimal integer. \n\nUsage: java DiningPhilosophers [NUMBER_OF_PHILOSOPHERS]\n");
+					System.exit(1);
+				}
+			}
+			
+			
 
 			// Make the monitor aware of how many philosophers there are
 			soMonitor = new Monitor(iPhilosophers);
