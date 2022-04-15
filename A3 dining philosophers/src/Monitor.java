@@ -89,9 +89,11 @@ public class Monitor
 	 * Only one philosopher at a time is allowed to philosophy
 	 * (while she is not eating).
 	 */
-	public synchronized void requestTalk()
+	public synchronized void requestTalk(final int piTID)
 	{
-		while(isSomeoneTalking) {
+		int i = piTID - 1;
+		
+		while(isSomeoneTalking || philosophers[i] == Status.EATING) {
 			try{
 				wait();
 			} catch (InterruptedException e) {

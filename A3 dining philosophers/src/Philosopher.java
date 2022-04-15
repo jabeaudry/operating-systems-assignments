@@ -90,11 +90,11 @@ public class Philosopher extends BaseThread
 	{
 		for(int i = 0; i < DiningPhilosophers.DINING_STEPS; i++)
 		{
-			DiningPhilosophers.soMonitor.pickUp(getTID());
+			DiningPhilosophers.soMonitor.pickUp(this.getTID());
 
 			eat();
 
-			DiningPhilosophers.soMonitor.putDown(getTID());
+			DiningPhilosophers.soMonitor.putDown(this.getTID());
 
 			think();
 
@@ -105,7 +105,7 @@ public class Philosopher extends BaseThread
 			 */
 			if(Math.random() <= 0.25)
             {
-                DiningPhilosophers.soMonitor.requestTalk();
+                DiningPhilosophers.soMonitor.requestTalk(this.getTID());
                 talk();
                 DiningPhilosophers.soMonitor.endTalk();
             }
