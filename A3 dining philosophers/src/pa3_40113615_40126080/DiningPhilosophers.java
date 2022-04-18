@@ -97,7 +97,6 @@ public class DiningPhilosophers
 				aoPhilosophers[j].join();
 
 			System.out.println("All philosophers have left. System terminates normally.");
-			
 		}
 		catch(InterruptedException e)
 		{
