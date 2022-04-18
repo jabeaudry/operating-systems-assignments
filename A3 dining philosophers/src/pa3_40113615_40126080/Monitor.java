@@ -1,6 +1,3 @@
-import java.util.LinkedList;
-import java.util.Queue;
-
 /**
  * Class Monitor
  * To synchronize dining philosophers.
@@ -19,7 +16,6 @@ public class Monitor
     
     protected int nbPhilosophers;
     protected boolean isSomeoneTalking;
-    Queue<Integer> q = new LinkedList(); //keeps track of who has been waiting the longest to eat
     
 	/**
 	 * Constructor
@@ -46,13 +42,8 @@ public class Monitor
 		//If hungry and the philosophers right and left are not eating (chopsticks are available)
 		if((philosophers[i] == Status.HUNGRY) && (philosophers[(i - 1 + nbPhilosophers) % nbPhilosophers] != Status.EATING) 
 				&& (philosophers[(i + 1) % nbPhilosophers] != Status.EATING)) {
-			if (q.peek() == i)
-            {
-				//System.out.println(q.peek()+1);
-                philosophers[i] = Status.EATING;
-                q.poll();//using pull instead of remove since remove will throw an exception when empty
-                notifyAll();
-            }
+			philosophers[i] = Status.EATING;
+			notifyAll();
 		}
 	}
 	
@@ -64,8 +55,7 @@ public class Monitor
 	{
 		int i = piTID - 1;
 		philosophers[i] = Status.HUNGRY;
-		q.add(i); //adds the philosopher at the back of the line
-		//System.out.println("............... " +(i+1)+ " is hungry");
+		
 		test(i);
 		
 		//If the philosopher isn't eating, wait and try again
